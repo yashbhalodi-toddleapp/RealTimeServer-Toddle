@@ -1,0 +1,22 @@
+services:
+  realtimeserver:
+    container_name: server
+    build: ./
+    command: npm start
+    ports:
+      - "3000:3000"
+      - "4000:4000"
+    working_dir: /usr/src/toddlerealtime
+    volumes:
+      - ./:/usr/src/toddlerealtime
+    environment:
+      - REDIS_URI=redis://redis:6379
+    depends_on:
+      - redis
+
+  redis:
+    container_name: redis
+    image: redis
+    ports:
+      - "6379:6379"
+    command: ["redis-server", "--bind", "redis", "--port", "6379"]
